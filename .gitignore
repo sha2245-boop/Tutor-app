@@ -1,0 +1,7 @@
+# Never upload student data or secrets
+tutorbook.db
+.secret
+__pycache__/
+.venv/
+*.pyc
+uploads/
