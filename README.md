@@ -7,7 +7,7 @@ bill (absences, holidays, make-up classes, carried-over dues) and writes a
 ready-to-send WhatsApp reminder for every pending payment.
 
 ## Features
-- Batches and students, with a fee per class (custom rate per student optional)
+- Batches and students, with a fee per class
 - One-tap attendance: Present, Absent, Excused (make-up owed)
 - Holidays are never billed; make-up sessions are billed when attended
 - Monthly bills with carry-forward of unpaid amounts
