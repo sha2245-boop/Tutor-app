@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TutorBook</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f7;--card:#fff;--ink:#16213e;--mute:#66728a;--line:#d9e0ec;--pri:#2b3f8c;--onpri:#fff;--ok:#1b8a5a;--okbg:#dcf3e8;--warn:#a96a00;--warnbg:#fdf0d2;--bad:#c23a2b;--badbg:#fbe1de;--none:#e6ebf3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--card:#171f36;--ink:#e8ecf7;--mute:#93a0bd;--line:#2a3558;--pri:#8ea2ff;--onpri:#0e1424;--ok:#5fd1a0;--okbg:#14382b;--warn:#f0b955;--warnbg:#3b2e10;--bad:#ff8d80;--badbg:#401d1a;--none:#232d4a}}
+:root[data-theme="dark"]{--bg:#0e1424;--card:#171f36;--ink:#e8ecf7;--mute:#93a0bd;--line:#2a3558;--pri:#8ea2ff;--onpri:#0e1424;--ok:#5fd1a0;--okbg:#14382b;--warn:#f0b955;--warnbg:#3b2e10;--bad:#ff8d80;--badbg:#401d1a;--none:#232d4a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 "Bricolage Grotesque",system-ui,sans-serif;padding-bottom:84px}
+main{max-width:640px;margin:0 auto;padding:14px}
+h1{font-size:22px;font-weight:800;margin:0}h2{font-size:17px;margin:18px 0 8px;font-weight:800}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mute{color:var(--mute);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:9px;padding:8px 12px}
+button.p{background:var(--pri);color:var(--onpri);border-color:var(--pri);font-weight:600}
+button.sm{padding:5px 9px;font-size:13px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}textarea{resize:vertical}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 10px;font-size:13px}
+.seg button.on{background:var(--pri);color:var(--onpri)}
+.st{min-width:128px;border:0;font-weight:600;border-radius:9px;padding:9px 10px;background:var(--none);color:var(--mute)}
+.st.P{background:var(--okbg);color:var(--ok)}.st.A{background:var(--badbg);color:var(--bad)}.st.E{background:var(--warnbg);color:var(--warn)}
+.stu{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px dashed var(--line)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav div{display:flex;width:100%;max-width:640px}
+nav button{flex:1;border:0;border-radius:0;background:none;padding:14px 2px;font-size:12.5px;font-weight:600;color:var(--mute)}
+nav button.on{color:var(--pri);box-shadow:inset 0 3px 0 var(--pri)}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.sum div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+.sum b{display:block;font-size:19px}
+.chips span{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--none);margin:2px 4px 2px 0}
+.pend{color:var(--bad);font-weight:800}.paid{color:var(--ok);font-weight:800}
+.amt{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0;font-size:13px}
+.amt b{display:block;font-size:15px}
+.ov{position:fixed;inset:0;background:rgba(10,15,30,.55);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.mod{background:var(--card);width:100%;max-width:560px;border-radius:16px 16px 0 0;padding:16px;max-height:90%;overflow:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.msg{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:14px}
+.days{display:flex;gap:4px;flex-wrap:wrap}.days label{display:flex;align-items:center;gap:4px;margin:0;padding:6px 9px;border:1px solid var(--line);border-radius:9px;color:var(--ink)}
+.days input{width:auto}
+.empty{text-align:center;padding:26px 10px;color:var(--mute)}
+a.btn{display:inline-block;text-decoration:none;background:#1b8a5a;color:#fff;border-radius:9px;padding:8px 12px;font-weight:600}
+</style></head><body>
+<main id="app"></main>
+<nav><div id="nav"></div></nav>
+<script>
+const K='tutorbook.v1';
+const DEF={students:[],batches:[],sessions:[],payments:[],courses:[],feedback:[],materials:[],set:{name:'',upi:'',billAbsent:true,subjects:[]}};
+let S=JSON.parse(JSON.stringify(DEF));
+S.set=Object.assign({},DEF.set,S.set);
+let q=Promise.resolve();const save=()=>{const b=JSON.stringify(S);q=q.then(()=>fetch('/api/state',{method:'PUT',headers:{'Content-Type':'application/json'},body:b}).then(r=>{if(r.status==401)location='/login'}).catch(()=>{}))};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const ld=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const todayS=()=>ld(new Date());
+let tab='today',date=todayS(),month=todayS().slice(0,7);
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const bat=id=>S.batches.find(b=>b.id==id);
+const stu=id=>S.students.find(s=>s.id==id);
+const rate=s=>+s.rate||+(bat(s.batchId)||{}).rate||0;
+const mname=m=>new Date(m+'-01T00:00').toLocaleString('en-IN',{month:'long',year:'numeric'});
+
+/* ---------- billing ---------- */
+function count(sid,m){const c={P:0,A:0,E:0,H:0,mk:0};
+ S.sessions.forEach(x=>{if(!x.date.startsWith(m))return;
+  if(x.type=='holiday'){const s=stu(sid);if(s&&s.batchId==x.batchId)c.H++;return}
+  const v=x.att[sid];if(!v)return;c[v]++;if(x.type=='makeup'&&v=='P')c.mk++});
+ return c}
+function billed(sid,m){const s=stu(sid),c=count(sid,m);return rate(s)*(c.P+(S.set.billAbsent?c.A:0))}
+function bill(sid,m){const s=stu(sid),c=count(sid,m);
+ const months=[...new Set(S.sessions.map(x=>x.date.slice(0,7)))].filter(x=>x<m);
+ const prevBilled=months.reduce((a,x)=>a+billed(sid,x),0);
+ const pay=(f)=>S.payments.filter(p=>p.sid==sid&&f(p.date.slice(0,7))).reduce((a,p)=>a+p.amt,0);
+ const prev=Math.max(0,prevBilled-pay(x=>x<m)),cur=billed(sid,m),paid=pay(x=>x==m);
+ const owed=S.sessions.reduce((a,x)=>x.type!='holiday'&&x.att[sid]=='E'?a+1:a,0)-S.sessions.reduce((a,x)=>x.type=='makeup'&&x.att[sid]=='P'?a+1:a,0);
+ return{c,prev:prev,cur,paid,pending:Math.max(0,prev+cur-paid),owed:Math.max(0,owed),r:rate(s)}}
+
+/* ---------- ui helpers ---------- */
+function modal(html,after){const o=document.createElement('div');o.className='ov';o.innerHTML='<div class="mod">'+html+'</div>';
+ o.addEventListener('click',e=>{if(e.target==o)o.remove()});document.body.appendChild(o);o.close=()=>o.remove();after&&after(o);return o}
+const val=(o,id)=>o.querySelector('#'+id).value.trim();
+
+/* ---------- attendance ---------- */
+function sess(bid,d,type){return S.sessions.find(x=>x.batchId==bid&&x.date==d&&(type=='makeup'?x.type=='makeup'&&x.id==arguments[3]:x.type!='makeup'))}
+function tap(sid_,bid,stid){let x=S.sessions.find(z=>z.id==sid_);
+ if(!x){x={id:uid(),batchId:bid,date,type:'class',att:{}};S.sessions.push(x)}
+ const o={'':'P',P:'A',A:'E',E:''};const n=o[x.att[stid]||''];
+ n?x.att[stid]=n:delete x.att[stid];save();render()}
+function allP(sid_,bid){let x=S.sessions.find(z=>z.id==sid_);
+ if(!x){x={id:uid(),batchId:bid,date,type:'class',att:{}};S.sessions.push(x)}
+ S.students.filter(s=>s.batchId==bid).forEach(s=>x.att[s.id]='P');save();render()}
+function setHoliday(sid_,bid,on){let x=S.sessions.find(z=>z.id==sid_);
+ if(!x){x={id:uid(),batchId:bid,date,type:'class',att:{}};S.sessions.push(x)}
+ x.type=on?'holiday':'class';save();render()}
+function addMakeup(bid){S.sessions.push({id:uid(),batchId:bid,date,type:'makeup',att:{}});save();render()}
+function delSess(id){S.sessions=S.sessions.filter(x=>x.id!=id);save();render()}
+const LBL={'':'Tap to mark',P:'✓ Present',get A(){return S.set.billAbsent?'✗ Absent · billed':'✗ Absent'},E:'↻ Excused · make-up'};
+function sessCard(x,b,label){const kids=S.students.filter(s=>s.batchId==b.id);
+ const hol=x&&x.type=='holiday',mk=x&&x.type=='makeup';
+ return `<div class="card"><div class="row"><div><b>${esc(b.name)}</b> ${mk?'<span class="mute">make-up session</span>':''}<div class="mute">${label||''}</div></div>
+ ${mk?`<button class="sm" onclick="delSess('${x.id}')">Remove</button>`:`<div class="seg"><button class="${hol?'':'on'}" onclick="setHoliday('${x?x.id:''}','${b.id}',false)">Class</button><button class="${hol?'on':''}" onclick="setHoliday('${x?x.id:''}','${b.id}',true)">Holiday</button></div>`}</div>
+ ${hol?'<div class="mute" style="margin-top:8px">Holiday or cancelled. Nobody is billed for this day.</div>':
+ (kids.length?kids.map(s=>{const v=x&&x.att[s.id]||'';return `<div class="stu"><span>${esc(s.name)}</span><button class="st ${v}" onclick="tap('${x?x.id:''}','${b.id}','${s.id}')">${LBL[v]}</button></div>`}).join('')+
+ `<div style="margin-top:8px"><button class="sm" onclick="allP('${x?x.id:''}','${b.id}')">Mark all present</button></div>`:'<div class="mute" style="margin-top:8px">No students in this batch yet.</div>')}</div>`}
+function today_(){const dow=new Date(date+'T00:00').getDay();
+ let h=`<div class="top"><h1>Attendance</h1></div><input type="date" value="${date}" onchange="date=this.value||todayS();render()">
+ <p class="mute">Tap a name to cycle: Present → Absent → Excused (make-up owed) → clear.</p>`;
+ if(!S.batches.length)return h+`<div class="empty">Add a batch and students under <b>Setup</b> to start.</div>`;
+ const sched=[],other=[];
+ S.batches.forEach(b=>{const all=S.sessions.filter(x=>x.batchId==b.id&&x.date==date);((b.days||[]).includes(dow)||all.length?sched:other).push(b)});
+ sched.forEach(b=>{const all=S.sessions.filter(x=>x.batchId==b.id&&x.date==date);
+  const c=all.find(x=>x.type!='makeup');
+  h+=sessCard(c,b,esc(b.time||''));
+  all.filter(x=>x.type=='makeup').forEach(m=>h+=sessCard(m,b));
+  h+=`<div style="margin:-4px 0 12px"><button class="sm" onclick="addMakeup('${b.id}')">+ Make-up session for ${esc(b.name)}</button></div>`});
+ if(!sched.length)h+='<div class="empty">No batch is scheduled on this day.</div>';
+ if(other.length)h+=`<h2>Other batches</h2>`+other.map(b=>`<div class="card row"><span>${esc(b.name)} <span class="mute">not scheduled</span></span><span><button class="sm" onclick="setHoliday('','${b.id}',false)">Take class</button> <button class="sm" onclick="addMakeup('${b.id}')">Make-up</button></span></div>`).join('');
+ return h}
+
+/* ---------- students & setup ---------- */
+function students_(){let h=`<div class="top"><h1>Students</h1><button class="p" onclick="stuForm()">+ Add student</button></div>`;
+ if(!S.students.length)return h+'<div class="empty">No students yet. Add your first student.</div>';
+ return h+S.students.map(s=>{const b=bat(s.batchId);return `<div class="card row" onclick="stuForm('${s.id}')" style="cursor:pointer"><div><b>${esc(s.name)}</b><div class="mute">${esc(b?b.name:'No batch')} · ${inr(rate(s))}/class · ${esc(s.parent||'')}</div></div><span><button class="sm" onclick="event.stopPropagation();fbModal('${s.id}')">Feedback</button></span></div>`}).join('')}
+function stuForm(id){const s=id?stu(id):{};if(!S.batches.length)return modal('<p>Create a batch first (Setup tab).</p><button onclick="this.closest(\'.ov\').remove()">OK</button>');
+ modal(`<h2 style="margin-top:0">${id?'Edit':'Add'} student</h2>
+ <label>Student name</label><input id="n" value="${esc(s.name)}">
+ <label>Parent name</label><input id="pn" value="${esc(s.parent)}">
+ <label>Parent WhatsApp number</label><input id="ph" inputmode="tel" value="${esc(s.phone)}">
+ <label>Batch</label><select id="b">${S.batches.map(b=>`<option value="${b.id}" ${b.id==s.batchId?'selected':''}>${esc(b.name)} (${inr(b.rate)})</option>`).join('')}</select>
+ <label>Custom rate per class (optional)</label><input id="r" type="number" value="${s.rate||''}">
+ <div class="row" style="margin-top:14px"><span>${id?'<button id="d" style="color:var(--bad)">Delete</button>':''}</span><span><button id="c">Cancel</button> <button class="p" id="s">Save</button></span></div>`,o=>{
+  o.querySelector('#c').onclick=o.close;
+  if(id)o.querySelector('#d').onclick=()=>{if(confirm('Delete '+s.name+'?')){S.students=S.students.filter(x=>x.id!=id);save();o.close();render()}};
+  o.querySelector('#s').onclick=()=>{const n=val(o,'n');if(!n)return o.querySelector('#n').focus();
+   const d={id:id||uid(),name:n,parent:val(o,'pn'),phone:val(o,'ph'),batchId:val(o,'b'),rate:val(o,'r')};
+   if(id)Object.assign(s,d);else S.students.push(d);save();o.close();render()}})}
+function batchForm(id){const b=id?bat(id):{days:[1,3,5]};
+ modal(`<h2 style="margin-top:0">${id?'Edit':'Add'} batch</h2>
+ <label>Batch name</label><input id="n" placeholder="Class 8 Maths" value="${esc(b.name)}">
+ <label>Fee per class (₹)</label><input id="r" type="number" value="${b.rate||''}">
+ <label>Days</label><div class="days">${DN.map((d,i)=>`<label><input type="checkbox" value="${i}" ${(b.days||[]).includes(i)?'checked':''}>${d}</label>`).join('')}</div>
+ <label>Time</label><input id="t" placeholder="5:00 PM" value="${esc(b.time)}">
+ <div class="row" style="margin-top:14px"><span>${id?'<button id="d" style="color:var(--bad)">Delete</button>':''}</span><span><button id="c">Cancel</button> <button class="p" id="s">Save</button></span></div>`,o=>{
+  o.querySelector('#c').onclick=o.close;
+  if(id)o.querySelector('#d').onclick=()=>{if(confirm('Delete this batch, its students and attendance?')){S.students=S.students.filter(x=>x.batchId!=id);S.sessions=S.sessions.filter(x=>x.batchId!=id);S.batches=S.batches.filter(x=>x.id!=id);save();o.close();render()}};
+  o.querySelector('#s').onclick=()=>{const n=val(o,'n');if(!n)return o.querySelector('#n').focus();
+   const d={id:id||uid(),name:n,rate:+val(o,'r')||0,time:val(o,'t'),days:[...o.querySelectorAll('.days input:checked')].map(i=>+i.value)};
+   if(id)Object.assign(b,d);else S.batches.push(d);save();o.close();render()}})}
+function setup_(){return `<div class="top"><h1>Setup</h1><button class="p" onclick="batchForm()">+ Add batch</button></div>
+ ${S.batches.map(b=>`<div class="card row" onclick="batchForm('${b.id}')" style="cursor:pointer"><div><b>${esc(b.name)}</b><div class="mute">${inr(b.rate)}/class · ${(b.days||[]).map(d=>DN[d]).join(', ')} ${esc(b.time||'')}</div></div><span class="mute">Edit</span></div>`).join('')||'<div class="empty">No batches yet.</div>'}
+ <h2>Billing &amp; messages</h2><div class="card">
+ <label style="margin-top:0">Your name (used in reminders)</label><input value="${esc(S.set.name)}" onchange="S.set.name=this.value;save()">
+ <label>UPI ID (added to reminders)</label><input value="${esc(S.set.upi)}" placeholder="name@upi" onchange="S.set.upi=this.value;save()">
+ <label>When a student is absent</label><select onchange="S.set.billAbsent=this.value=='1';save();render()"><option value="1" ${S.set.billAbsent?'selected':''}>Charge the class (mark Excused to waive it)</option><option value="0" ${!S.set.billAbsent?'selected':''}>Don't charge absences</option></select>
+ <p class="mute">Holidays are never charged. Excused classes are not charged and become make-ups owed; the make-up session is charged when attended.</p></div>
+ <div class="card"><a class="mute" href="/backup.db">Download backup</a> · <a class="mute" href="/logout">Log out</a><br><br><button style="color:var(--bad)" onclick="if(confirm('Erase everything?')){S=JSON.parse(JSON.stringify(DEF));save();render()}">Erase all data</button></div>`}
+
+/* ---------- fees ---------- */
+function msg(s,bl){const m=mname(month),c=bl.c;
+ return `Hello ${s.parent||'ji'}, this is ${S.set.name||'your child\'s tutor'}. Fee summary for ${s.name} – ${m}:\n\n`+
+ `• Classes attended: ${c.P}${c.mk?` (incl. ${c.mk} make-up)`:''}\n`+
+ (c.A?`• Absent: ${c.A}${S.set.billAbsent?' (charged)':' (not charged)'}\n`:'')+
+ (c.E?`• Excused, make-up due: ${c.E}\n`:'')+(c.H?`• Holidays (not charged): ${c.H}\n`:'')+
+ `• Rate: ${inr(bl.r)} per class\n\nThis month: ${inr(bl.cur)}\n`+(bl.prev?`Previous dues: ${inr(bl.prev)}\n`:'')+(bl.paid?`Paid: ${inr(bl.paid)}\n`:'')+
+ `*Pending: ${inr(bl.pending)}*\n`+(S.set.upi?`\nPay via UPI: ${S.set.upi}\n`:'')+`\nThank you!`}
+function remind(id){const s=stu(id),bl=bill(id,month),t=msg(s,bl);let p=(s.phone||'').replace(/\D/g,'');if(p.length==10)p='91'+p;
+ modal(`<h2 style="margin-top:0">Reminder for ${esc(s.parent||s.name)}</h2><div class="msg">${esc(t)}</div>
+ ${p?'':'<p class="mute">No phone saved. Copy the text or add a number in Students.</p>'}
+ <div class="row" style="margin-top:12px"><button id="cp">Copy text</button><span><button id="c">Close</button> ${p?`<a class="btn" target="_blank" rel="noopener" href="https://wa.me/${p}?text=${encodeURIComponent(t)}">Open WhatsApp</a>`:''}</span></div>`,o=>{
+  o.querySelector('#c').onclick=o.close;o.querySelector('#cp').onclick=e=>{try{navigator.clipboard.writeText(t);e.target.textContent='Copied'}catch(x){e.target.textContent='Select the text to copy'}}})}
+function pay(id){const s=stu(id),bl=bill(id,month);
+ modal(`<h2 style="margin-top:0">Payment from ${esc(s.parent||s.name)}</h2><label>Amount received (₹)</label><input id="a" type="number" value="${bl.pending||''}">
+ <label>Date</label><input id="d" type="date" value="${todayS()}"><div class="row" style="margin-top:14px"><button id="c">Cancel</button><button class="p" id="s">Save payment</button></div>`,o=>{
+  o.querySelector('#c').onclick=o.close;o.querySelector('#s').onclick=()=>{const a=+val(o,'a');if(!a)return;
+   S.payments.push({id:uid(),sid:id,amt:a,date:val(o,'d')||todayS()});save();o.close();render()}})}
+function fees_(){let h=`<div class="top"><h1>Fees</h1><a class="mute" href="/export/fees.csv?month=${month}">Download CSV</a></div><input type="month" value="${month}" onchange="month=this.value||month;render()">`;
+ if(!S.students.length)return h+'<div class="empty">Add students to see monthly bills.</div>';
+ const rows=S.students.map(s=>({s,b:bill(s.id,month)}));
+ const tb=rows.reduce((a,r)=>a+r.b.cur,0),tp=rows.reduce((a,r)=>a+r.b.pending,0),pc=rows.filter(r=>r.b.pending>0).length;
+ h+=`<div class="sum"><div class="mute">Billed<b>${inr(tb)}</b></div><div class="mute">Pending<b class="pend">${inr(tp)}</b></div><div class="mute">Families owing<b>${pc}</b></div></div>`;
+ rows.sort((a,b)=>b.b.pending-a.b.pending);
+ return h+rows.map(({s,b})=>{const c=b.c;return `<div class="card"><div class="row"><div><b>${esc(s.name)}</b> <span class="mute">${esc((bat(s.batchId)||{}).name||'')} · ${inr(b.r)}/class</span></div>
+ ${b.pending>0?'<span class="pend">Pending '+inr(b.pending)+'</span>':'<span class="paid">Settled ✓</span>'}</div>
+ <div class="chips"><span>${c.P} attended${c.mk?` (${c.mk} make-up)`:''}</span>${c.A?`<span>${c.A} absent${S.set.billAbsent?' · billed':''}</span>`:''}${c.E?`<span>${c.E} excused</span>`:''}${c.H?`<span>${c.H} holiday</span>`:''}${b.owed?`<span style="background:var(--warnbg);color:var(--warn)">${b.owed} make-up owed</span>`:''}</div>
+ <div class="amt"><div class="mute">This month<b>${inr(b.cur)}</b></div><div class="mute">Previous<b>${inr(b.prev)}</b></div><div class="mute">Paid<b>${inr(b.paid)}</b></div><div class="mute">Pending<b>${inr(b.pending)}</b></div></div>
+ <button class="sm" onclick="pay('${s.id}')">Record payment</button> ${b.pending>0?`<button class="sm p" onclick="remind('${s.id}')">WhatsApp reminder</button>`:''}</div>`}).join('')}
+
+/* ---------- feedback, courses, library ---------- */
+const waUrl=(ph,t)=>{let p=(ph||'').replace(/\D/g,'');if(p.length==10)p='91'+p;return 'https://wa.me/'+p+'?text='+encodeURIComponent(t)};
+const closeAll=()=>document.querySelectorAll('.ov').forEach(o=>o.remove());
+const addSubj=n=>{n=(n||'').trim();const L=S.set.subjects||[];if(n&&!L.includes(n))S.set.subjects=[...L,n]};
+const subjList=()=>`<datalist id="sl">${(S.set.subjects||[]).map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`;
+const btns=(id)=>`<div class="row" style="margin-top:14px"><span>${id?'<button id="d" style="color:var(--bad)">Delete</button>':''}</span><span><button id="c">Cancel</button> <button class="p" id="s">Save</button></span></div>`;
+
+function fbModal(id){const s=stu(id),L=S.feedback.filter(f=>f.sid==id).sort((a,b)=>b.date.localeCompare(a.date));
+ modal(`<h2 style="margin-top:0">Feedback · ${esc(s.name)}</h2>
+ <label>Note for parent</label><textarea id="t" rows="3" placeholder="Progress, homework, what to improve"></textarea>
+ <div class="row" style="margin-top:12px"><button id="c">Close</button><button class="p" id="s">Save feedback</button></div>
+ <h2>History</h2>${L.map(f=>{const t='Hello '+(s.parent||'ji')+', feedback for '+s.name+' ('+f.date+'):\n'+f.text+'\n– '+(S.set.name||'Tutor');
+  return `<div class="card"><div class="row"><b>${f.date}</b><span><a class="mute" target="_blank" rel="noopener" href="${waUrl(s.phone,t)}">Send on WhatsApp</a> · <a class="mute" href="#" onclick="delFb('${f.id}','${id}');return false">Delete</a></span></div><div>${esc(f.text)}</div></div>`}).join('')||'<div class="mute">No feedback yet.</div>'}`,o=>{
+  o.querySelector('#c').onclick=o.close;
+  o.querySelector('#s').onclick=()=>{const t=val(o,'t');if(!t)return o.querySelector('#t').focus();
+   S.feedback.push({id:uid(),sid:id,date:todayS(),text:t});save();closeAll();fbModal(id)}})}
+function delFb(f,sid){S.feedback=S.feedback.filter(x=>x.id!=f);save();closeAll();fbModal(sid)}
+
+function courses_(){const bn=ids=>(ids||[]).map(i=>(bat(i)||{}).name).filter(Boolean).join(', ');
+ const h=`<div class="top"><h1>Courses</h1><button class="p" onclick="courseForm()">+ Add course</button></div>`;
+ if(!S.courses.length)return h+'<div class="empty">Add a course with its syllabus topics, link it to batches, and tick topics off as you teach them.</div>';
+ return h+S.courses.map(c=>{const n=c.topics.length,d=c.topics.filter(t=>t.d).length,p=n?Math.round(d*100/n):0;
+  return `<div class="card"><div class="row"><div><b>${esc(c.name)}</b><div class="mute">${esc(c.subject||'No subject')} · ${esc(bn(c.batchIds)||'No batch linked')}</div></div><button class="sm" onclick="courseForm('${c.id}')">Edit</button></div>
+  ${c.desc?`<div class="mute" style="margin-top:6px">${esc(c.desc)}</div>`:''}
+  ${n?`<div style="height:8px;background:var(--none);border-radius:9px;margin:10px 0 4px"><div style="height:8px;width:${p}%;background:var(--ok);border-radius:9px"></div></div><div class="mute">${d} of ${n} topics done · ${p}%</div>`+c.topics.map((t,i)=>`<label style="display:flex;gap:8px;align-items:center;margin:6px 0 0;color:var(--ink)"><input type="checkbox" style="width:auto" ${t.d?'checked':''} onchange="togTopic('${c.id}',${i})">${esc(t.t)}</label>`).join(''):''}</div>`}).join('')}
+function togTopic(id,i){const c=S.courses.find(x=>x.id==id);c.topics[i].d=!c.topics[i].d;save();render()}
+function courseForm(id){const c=id?S.courses.find(x=>x.id==id):{topics:[],batchIds:[]};
+ modal(`<h2 style="margin-top:0">${id?'Edit':'Add'} course</h2>
+ <label>Course name</label><input id="n" placeholder="Class 8 Maths – Term 1" value="${esc(c.name)}">
+ <label>Subject</label><input id="sj" list="sl" value="${esc(c.subject)}">${subjList()}
+ <label>Description (optional)</label><input id="ds" value="${esc(c.desc)}">
+ <label>Batches taking this course</label><div class="days" id="bt">${S.batches.map(b=>`<label><input type="checkbox" value="${b.id}" ${(c.batchIds||[]).includes(b.id)?'checked':''}>${esc(b.name)}</label>`).join('')||'<span class="mute">Add batches in Setup first.</span>'}</div>
+ <label>Syllabus topics (one per line)</label><textarea id="tp" rows="6">${esc(c.topics.map(t=>t.t).join('\n'))}</textarea>${btns(id)}`,o=>{
+  o.querySelector('#c').onclick=o.close;
+  if(id)o.querySelector('#d').onclick=()=>{if(confirm('Delete this course?')){S.courses=S.courses.filter(x=>x.id!=id);save();o.close();render()}};
+  o.querySelector('#s').onclick=()=>{const n=val(o,'n');if(!n)return o.querySelector('#n').focus();
+   const topics=o.querySelector('#tp').value.split('\n').map(x=>x.trim()).filter(Boolean).map(t=>({t,d:!!(c.topics.find(x=>x.t==t)||{}).d}));
+   const sj=val(o,'sj');addSubj(sj);
+   const d={id:id||uid(),name:n,subject:sj,desc:val(o,'ds'),topics,batchIds:[...o.querySelectorAll('#bt input:checked')].map(i=>i.value)};
+   if(id)Object.assign(c,d);else S.courses.push(d);save();o.close();render()}})}
+
+let lf={sub:'',bat:''};
+function library_(){const subs=S.set.subjects||[];
+ const h=`<div class="top"><h1>Library</h1><button class="p" onclick="matForm()">+ Add material</button></div>
+ <div class="row" style="gap:6px"><select onchange="lf.sub=this.value;render()"><option value="">All subjects</option>${subs.map(x=>`<option ${lf.sub==x?'selected':''}>${esc(x)}</option>`).join('')}</select>
+ <select onchange="lf.bat=this.value;render()"><option value="">All batches</option>${S.batches.map(b=>`<option value="${b.id}" ${lf.bat==b.id?'selected':''}>${esc(b.name)}</option>`).join('')}</select></div>
+ <p><button class="sm" onclick="subjModal()">Manage subjects</button></p>`;
+ const L=S.materials.filter(m=>(!lf.sub||m.subject==lf.sub)&&(!lf.bat||!m.batchId||m.batchId==lf.bat));
+ if(!L.length)return h+'<div class="empty">No materials yet. Add notes, worksheets, PDFs or links and sort them by subject and batch.</div>';
+ const g={};L.forEach(m=>{const k=m.subject||'No subject';(g[k]=g[k]||[]).push(m)});
+ return h+Object.keys(g).sort().map(k=>`<h2>${esc(k)}</h2>`+g[k].sort((a,b)=>b.date.localeCompare(a.date)).map(m=>`<div class="card"><div class="row"><div><b>${esc(m.title)}</b><div class="mute">${esc(m.batchId?(bat(m.batchId)||{}).name||'':'All batches')} · ${m.date}</div></div><button class="sm" onclick="matForm('${m.id}')">Edit</button></div>
+  ${m.note?`<div style="margin-top:6px">${esc(m.note)}</div>`:''}
+  <div style="margin-top:8px">${m.file?`<a class="btn" target="_blank" href="/files/${encodeURIComponent(m.file)}">Open ${esc(m.fname||'file')}</a> `:''}${m.url?`<a class="btn" target="_blank" rel="noopener" href="${esc(m.url)}">Open link</a> <a class="btn" style="background:var(--pri);color:var(--onpri)" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m.title+'\n'+m.url)}">Share on WhatsApp</a>`:''}</div></div>`).join('')).join('')}
+function matForm(id){const m=id?S.materials.find(x=>x.id==id):{};
+ modal(`<h2 style="margin-top:0">${id?'Edit':'Add'} material</h2>
+ <label>Title</label><input id="n" value="${esc(m.title)}">
+ <label>Subject</label><input id="sj" list="sl" value="${esc(m.subject||lf.sub)}">${subjList()}
+ <label>Batch</label><select id="b"><option value="">All batches</option>${S.batches.map(b=>`<option value="${b.id}" ${m.batchId==b.id?'selected':''}>${esc(b.name)}</option>`).join('')}</select>
+ <label>Upload a file (PDF, image, doc; up to 25 MB)</label><input id="f" type="file">${m.fname?`<div class="mute">Current file: ${esc(m.fname)}</div>`:''}
+ <label>Or a link (YouTube, Drive...)</label><input id="u" value="${esc(m.url)}">
+ <label>Note (optional)</label><textarea id="t" rows="2">${esc(m.note)}</textarea>${btns(id)}`,o=>{
+  o.querySelector('#c').onclick=o.close;
+  if(id)o.querySelector('#d').onclick=()=>{if(confirm('Delete this material?')){S.materials=S.materials.filter(x=>x.id!=id);save();o.close();render()}};
+  o.querySelector('#s').onclick=async()=>{const n=val(o,'n');if(!n)return o.querySelector('#n').focus();
+   const btn=o.querySelector('#s');btn.disabled=true;btn.textContent='Saving…';
+   let file=m.file||'',fname=m.fname||'';const f=o.querySelector('#f').files[0];
+   if(f){try{const fd=new FormData();fd.append('file',f);const r=await fetch('/api/upload',{method:'POST',body:fd});if(!r.ok)throw 0;const j=await r.json();file=j.file;fname=j.name}catch(e){alert('Upload failed. Files must be under 25 MB.');btn.disabled=false;btn.textContent='Save';return}}
+   let u=val(o,'u');if(u&&!/^https?:\/\//i.test(u))u='https://'+u;
+   const sj=val(o,'sj');addSubj(sj);
+   const d={id:id||uid(),title:n,subject:sj,batchId:val(o,'b'),file,fname,url:u,note:val(o,'t'),date:m.date||todayS()};
+   if(id)Object.assign(m,d);else S.materials.push(d);save();o.close();render()}})}
+function subjModal(){const L=S.set.subjects||[];
+ modal(`<h2 style="margin-top:0">Subjects</h2><p class="mute">Your own categories for courses and materials.</p>
+ ${L.map((x,i)=>`<div class="stu"><span>${esc(x)}</span><button class="sm" onclick="rmSubj(${i})">Remove</button></div>`).join('')||'<div class="mute">None yet.</div>'}
+ <div class="row" style="margin-top:12px;gap:6px"><input id="n" placeholder="e.g. Maths"><button class="p" id="a">Add</button></div><div style="margin-top:12px"><button id="c">Close</button></div>`,o=>{
+  o.querySelector('#c').onclick=()=>{o.close();render()};
+  o.querySelector('#a').onclick=()=>{const n=val(o,'n');if(!n)return;addSubj(n);save();closeAll();subjModal()}})}
+function rmSubj(i){S.set.subjects=(S.set.subjects||[]).filter((_,j)=>j!=i);save();closeAll();subjModal()}
+
+/* ---------- demo + shell ---------- */
+function demo(){const b1={id:uid(),name:'Class 8 Maths',rate:300,days:[1,3,5],time:'5:00 PM'},b2={id:uid(),name:'Class 10 Science',rate:400,days:[2,4],time:'6:30 PM'};
+ S.batches.push(b1,b2);
+ const mk=(n,p,ph,b,r)=>{const s={id:uid(),name:n,parent:p,phone:ph,batchId:b.id,rate:r||''};S.students.push(s);return s};
+ const a=mk('Aarav Shah','Mrs. Shah','9876500001',b1),b=mk('Diya Rao','Mr. Rao','9876500002',b1),c=mk('Kabir Nair','Mrs. Nair','9876500003',b1,250),d=mk('Meera Iyer','Mr. Iyer','9876500004',b2),e=mk('Rohan Das','Mrs. Das','9876500005',b2);
+ const now=new Date(),y=now.getFullYear(),m=now.getMonth();let k=0;
+ for(let day=1;day<=now.getDate();day++){const dt=new Date(y,m,day),ds=ld(dt),w=dt.getDay();
+  [b1,b2].forEach(bt=>{if(!bt.days.includes(w))return;k++;const x={id:uid(),batchId:bt.id,date:ds,type:k==4?'holiday':'class',att:{}};
+   if(x.type!='holiday')S.students.filter(s=>s.batchId==bt.id).forEach((s,i)=>{x.att[s.id]=(k+i)%7==0?'A':(k+i)%9==0?'E':'P'});S.sessions.push(x)})}
+ save();render()}
+const TABS=[['today','Today'],['students','Students'],['fees','Fees'],['courses','Courses'],['library','Library'],['setup','Setup']];
+function render(){const v={today:today_,students:students_,fees:fees_,courses:courses_,library:library_,setup:setup_}[tab]();
+ $('#app').innerHTML=v;$('#nav').innerHTML=TABS.map(t=>`<button class="${tab==t[0]?'on':''}" onclick="tab='${t[0]}';render();scrollTo(0,0)">${t[1]}</button>`).join('')}
+const $=s=>document.querySelector(s);
+fetch('/api/state').then(r=>{if(r.status==401){location='/login';throw 0}return r.json()}).then(d=>{S=Object.assign(S,d);S.set=Object.assign({},DEF.set,S.set);render()}).catch(e=>{if(e!==0)$('#app').innerHTML='<div class="empty"><b>Can\'t reach the TutorBook server.</b><br>Start it with <code>python app.py</code>, then open <code>http://localhost:8000</code> in your browser. Opening this file directly won\'t work.</div>'});
+</script></body></html>
